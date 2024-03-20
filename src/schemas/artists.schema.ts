@@ -1,18 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
-export type AlbumsDocument = Albums & Document
+export type ArtistsDocument = Artists & Document
 
 @Schema()
-export class Albums {
+export class Artists {
   @Prop({ required: true })
   name: string;
 
   @Prop()
-  artist: string;
-
-  @Prop({ required: true })
-  date_release: Number;
+  information: string;
 
   @Prop()
   image: string;
@@ -21,4 +18,4 @@ export class Albums {
   isPublished: boolean;
 }
 
-export const ALbumsSchema = SchemaFactory.createForClass(Albums);
+export const ArtistsSchema = SchemaFactory.createForClass(Artists);
