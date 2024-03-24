@@ -1,7 +1,7 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, Schema as MongooseSchema } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
-export type TracksDocument = Tracks & Document
+export type TracksDocument = Tracks & Document;
 
 @Schema()
 export class Tracks {
@@ -9,12 +9,16 @@ export class Tracks {
   name: string;
 
   @Prop({
-    type: MongooseSchema.Types.ObjectId, ref: "Artists", required: true
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Artists',
+    required: true,
   })
   artist: MongooseSchema.Types.ObjectId;
 
   @Prop({
-    type: MongooseSchema.Types.ObjectId, ref: "Albums", required: true
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Albums',
+    required: true,
   })
   album: MongooseSchema.Types.ObjectId;
 
@@ -22,7 +26,7 @@ export class Tracks {
   durationTime: string;
 
   @Prop({ required: true })
-  trackNumber: Number;
+  trackNumber: number;
 
   @Prop({ default: false })
   isPublished: boolean;
