@@ -3,12 +3,17 @@ import {
   Controller,
   Get,
   Post,
+  Req,
   UnprocessableEntityException,
+  UseGuards,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/users.schema';
 import { CreateUserDto } from './create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { TokenAuthGuard } from 'src/token-auth/token-auth.guard';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -18,8 +23,8 @@ export class UsersController {
   ) {}
 
   @Get()
-  async getUsers() {
-    return await this.userModel.find();
+  getUsers() {
+    return this.userModel.find();
   }
 
   @Post()
@@ -40,5 +45,17 @@ export class UsersController {
 
       throw e;
     }
+  }
+
+  @UseGuards(AuthGuard('local'))
+  @Post('sessions')
+  async login(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(TokenAuthGuard)
+  @Get('logOut')
+  async secret(@Req() req: Request) {
+    return req.user;
   }
 }
