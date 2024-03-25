@@ -1,10 +1,15 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
+import * as bcrypt from 'bcrypt';
 
-export type UserDocument = User & Document;
+const SALT_WORK_FACTOR = 10;
+export interface UserMethods {
+  checkPassword(password: string): Promise<boolean>;
+  generateToken(): void;
+}
 
+export type UserDocument = User & Document & UserMethods;
 @Schema()
 export class User {
   @Prop({
@@ -28,9 +33,7 @@ export class User {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-const SALT_WORK_FACTOR = 10;
-
-UserSchema.methods.checkPassword = function (password) {
+UserSchema.methods.checkPassword = function (password: string) {
   return bcrypt.compare(password, this.password);
 };
 
@@ -40,6 +43,7 @@ UserSchema.methods.generateToken = function () {
 
 UserSchema.pre<UserDocument>('save', async function () {
   if (!this.isModified('password')) return;
+
   const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
   this.password = await bcrypt.hash(this.password, salt);
 });
