@@ -33,6 +33,7 @@ export class UsersController {
       const newUser = new this.userModel({
         email: userData.email,
         password: userData.password,
+        role: userData.role,
       });
 
       newUser.generateToken();

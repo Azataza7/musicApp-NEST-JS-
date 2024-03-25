@@ -15,6 +15,7 @@ import { Artists, ArtistsDocument } from '../schemas/artists.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateArtistDto } from './create-artist.dto';
 import { TokenAuthGuard } from 'src/token-auth/token-auth.guard';
+import { IsAdminAuthGuard } from 'src/is-admin-auth/is-admin-auth.guard';
 
 @Controller('artists')
 export class ArtistsController {
@@ -65,6 +66,7 @@ export class ArtistsController {
     }
   }
 
+  @UseGuards(IsAdminAuthGuard)
   @Delete(':id')
   async deleteOneItem(@Param('id') id: string) {
     try {

@@ -13,6 +13,7 @@ import { Model } from 'mongoose';
 import { Tracks, TracksDocument } from '../schemas/tracks.schema';
 import { CreateTrackDto } from './create-track.dto';
 import { TokenAuthGuard } from 'src/token-auth/token-auth.guard';
+import { IsAdminAuthGuard } from 'src/is-admin-auth/is-admin-auth.guard';
 
 @Controller('tracks')
 export class TracksController {
@@ -66,6 +67,7 @@ export class TracksController {
     }
   }
 
+  @UseGuards(IsAdminAuthGuard)
   @Delete(':id')
   async deleteOneItem(@Param('id') id: string) {
     try {
