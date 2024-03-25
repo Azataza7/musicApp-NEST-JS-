@@ -22,9 +22,6 @@ export class TokenAuthGuard implements CanActivate {
       return false;
     }
 
-    user.generateToken();
-    await user.save();
-
     request.user = user;
     return true;
   }

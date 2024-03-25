@@ -6,11 +6,13 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Tracks, TracksDocument } from '../schemas/tracks.schema';
 import { CreateTrackDto } from './create-track.dto';
+import { TokenAuthGuard } from 'src/token-auth/token-auth.guard';
 
 @Controller('tracks')
 export class TracksController {
@@ -42,6 +44,7 @@ export class TracksController {
     }
   }
 
+  @UseGuards(TokenAuthGuard)
   @Post()
   async createTrack(@Body() trackData: CreateTrackDto) {
     const trackCount = await this.tracksModel.countDocuments({
